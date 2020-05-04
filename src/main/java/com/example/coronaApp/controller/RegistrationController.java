@@ -4,6 +4,7 @@ package com.example.coronaApp.controller;
 import com.example.coronaApp.model.Registration;
 import com.example.coronaApp.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -14,8 +15,29 @@ public class RegistrationController {
     @Autowired private RegistrationService registrationService;
 
     @PostMapping("/registration")
-    public Registration create(@RequestBody Registration registration) {
-        return registrationService.save(registration);
+    public Registration create(@RequestBody Registration registration) throws Exception {
+        if (registration.getUsername() == null || registration.getUsername().equals(""))
+            throw new Exception("Gebruikersnaam");
+        else if (registration.getPassword() == null || registration.getPassword().equals(""))
+            throw new Exception("Wachtwoord");
+        else if (registration.getFirstName() == null || registration.getFirstName().equals(""))
+            throw new Exception("Voornaam");
+        else if (registration.getLastName() == null || registration.getLastName().equals(""))
+            throw new Exception("Achternaam");
+        else if (registration.getDateOfBirth() == null || registration.getDateOfBirth().equals(""))
+            throw new Exception("Geboortedatum");
+        else if (registration.getGender() == null || registration.getGender().equals(""))
+            throw new Exception("Geslacht");
+        else if (registration.getCity() == null || registration.getCity().equals(""))
+            throw new Exception("Woonplaats");
+        else
+            return registrationService.save(registration);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(Exception.class)
+    public String exceptionHandler(Exception e) {
+        return e.getMessage() + " ongeldig, probeer opnieuw.";
     }
 
 
