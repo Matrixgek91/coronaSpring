@@ -24,7 +24,7 @@ public class RegistrationController {
             throw new Exception("Voornaam");
         else if (registration.getLastName() == null || registration.getLastName().equals(""))
             throw new Exception("Achternaam");
-        else if (registration.getDateOfBirth() == null || registration.getDateOfBirth().equals(""))
+        else if (registration.getDateOfBirth() == null || registration.getDateOfBirth().equals("") || registration.getDateOfBirth().length() != 10)
             throw new Exception("Geboortedatum");
         else if (registration.getGender() == null || registration.getGender().equals(""))
             throw new Exception("Geslacht");
